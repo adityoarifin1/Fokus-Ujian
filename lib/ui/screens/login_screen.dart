@@ -121,11 +121,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             : const Text('Masuk'),
                       ),
                     ),
-                    const SizedBox(height: 12),
-                    const Text(
-                      'Demo login:\n- Admin: admin / admin123\n- Guru: guru / guru123',
-                      style: TextStyle(color: Colors.grey),
-                    ),
                   ],
                 ),
               ),

@@ -7,14 +7,18 @@ class AlarmService {
   
   Future<void> triggerAlarmEvent() async {
     try {
-      // Set volume to 100% (1.0)
-      await PerfectVolumeControl.setVolume(1.0);
+      // Set volume to 100% (1.0) hanya jika bukan di Web
+      // karena plugin perfect_volume_control tidak mendukung Web
+      if (!kIsWeb) {
+        await PerfectVolumeControl.setVolume(1.0);
+      }
       
-      // Play a ringing sound (Untuk prototipe, Anda butuh file asset alarm.mp3 di pubspec)
-      // _player.setReleaseMode(ReleaseMode.loop);
-      // await _player.play(AssetSource('alarm.mp3'));
+      // Play a ringing sound ("ting tung")
+      // Pastikan ada file alarm.mp3 di folder assets dan terdaftar di pubspec.yaml
+      _player.setReleaseMode(ReleaseMode.loop);
+      await _player.play(AssetSource('alarm.mp3'));
       
-      debugPrint('ALARM TRIGGERED! Volume set to 100%');
+      debugPrint('ALARM TRIGGERED!');
     } catch (e) {
       debugPrint('Error triggering alarm: $e');
     }

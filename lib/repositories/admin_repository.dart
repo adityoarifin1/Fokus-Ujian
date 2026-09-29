@@ -24,4 +24,38 @@ class AdminRepository {
     }
     return null;
   }
+
+  Future<List<Admin>> getAllGuru() async {
+    final db = await DatabaseHelper.instance.database;
+    final maps = await db.query(
+      'admin',
+      where: 'role = ?',
+      whereArgs: ['guru'],
+    );
+    return maps.map((e) => Admin.fromMap(e)).toList();
+  }
+
+  Future<int> insertAdmin(Admin admin) async {
+    final db = await DatabaseHelper.instance.database;
+    return await db.insert('admin', admin.toMap());
+  }
+
+  Future<int> updateAdmin(Admin admin) async {
+    final db = await DatabaseHelper.instance.database;
+    return await db.update(
+      'admin',
+      admin.toMap(),
+      where: 'id_admin = ?',
+      whereArgs: [admin.idAdmin],
+    );
+  }
+
+  Future<int> deleteAdmin(int idAdmin) async {
+    final db = await DatabaseHelper.instance.database;
+    return await db.delete(
+      'admin',
+      where: 'id_admin = ?',
+      whereArgs: [idAdmin],
+    );
+  }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'kelola_guru_screen.dart';
+
 class DashboardAdminScreen extends StatelessWidget {
   const DashboardAdminScreen({super.key});
 
@@ -29,14 +31,15 @@ class DashboardAdminScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             const Text(
-              'Di sini admin dapat mengelola daftar guru (Akan datang).',
+              'Di sini admin dapat mengelola daftar guru.',
               style: TextStyle(color: Colors.grey),
             ),
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Fitur kelola akun guru segera hadir.')),
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const KelolaGuruScreen()),
                 );
               },
               child: const Text('Kelola Akun Guru'),

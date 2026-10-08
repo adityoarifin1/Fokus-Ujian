@@ -139,7 +139,7 @@ class _KelolaUjianScreenState extends State<KelolaUjianScreen> {
       }
     } catch (e, st) {
       if (mounted) {
-        print('Error Excel: $e\n$st');
+        debugPrint('Error Excel: $e\n$st');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Gagal impor: File rusak atau tidak valid.')),
         );
@@ -162,7 +162,7 @@ class _KelolaUjianScreenState extends State<KelolaUjianScreen> {
       }
     } catch (e, st) {
       if (mounted) {
-        print('Error FilePicker: $e\n$st');
+        debugPrint('Error FilePicker: $e\n$st');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Gagal pilih file: $e')),
         );
@@ -283,7 +283,7 @@ class _KelolaUjianScreenState extends State<KelolaUjianScreen> {
                 },
                 child: Container(
                   decoration: BoxDecoration(
-                    color: _isDragging ? Colors.green.withOpacity(0.1) : Colors.transparent,
+                    color: _isDragging ? Colors.green.withValues(alpha: 0.1) : Colors.transparent,
                     border: _isDragging 
                       ? Border.all(color: Colors.green, width: 2)
                       : Border.all(color: Colors.transparent, width: 2),

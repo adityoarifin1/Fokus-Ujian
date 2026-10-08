@@ -1,5 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
-import 'package:perfect_volume_control/perfect_volume_control.dart';
+import 'package:volume_controller/volume_controller.dart';
 import 'package:flutter/foundation.dart';
 // Conditional import: jika dikompilasi ke Web (punya pustaka dart:html),
 // gunakan alarm_web_helper.dart. Jika tidak, gunakan alarm_mobile_helper.dart.
@@ -25,8 +25,8 @@ class AlarmService {
         }
       } else {
         _isPlaying = true;
-        // Kembalikan plugin perfect_volume_control khusus untuk Mobile
-        await PerfectVolumeControl.setVolume(1.0);
+        // Kembalikan plugin volume_controller khusus untuk Mobile
+        VolumeController().setVolume(1.0);
         
         _player.setReleaseMode(ReleaseMode.loop);
         await _player.play(AssetSource('alarm.mp3'));

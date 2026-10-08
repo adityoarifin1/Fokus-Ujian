@@ -41,7 +41,7 @@ dependencies:
   volume_controller: ^3.7.1
   sqflite_common_ffi_web: ^1.2.0
   excel: ^4.0.6
-  file_picker: 8.0.0
+  file_picker: ^8.1.2
   desktop_drop: ^0.8.4
   cross_file: ^0.3.5+5
   crypto: ^3.0.7

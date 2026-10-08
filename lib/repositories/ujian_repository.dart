@@ -44,4 +44,14 @@ class UjianRepository {
     }
     return null;
   }
+
+  Future<int> updateStatusUjian(int idUjian, String status) async {
+    final db = await DatabaseHelper.instance.database;
+    return await db.update(
+      'ujian',
+      {'status': status},
+      where: 'id_ujian = ?',
+      whereArgs: [idUjian],
+    );
+  }
 }

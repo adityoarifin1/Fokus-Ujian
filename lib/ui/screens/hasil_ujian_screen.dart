@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../models/ujian.dart';
 import '../../repositories/jawaban_repository.dart';
 import '../../repositories/pelanggaran_repository.dart';
+import '../../repositories/soal_repository.dart';
 
 class HasilUjianScreen extends StatefulWidget {
   final Ujian ujian;
@@ -16,11 +17,13 @@ class HasilUjianScreen extends StatefulWidget {
 class _HasilUjianScreenState extends State<HasilUjianScreen> {
   final _jawabanRepo = JawabanRepository();
   final _pelanggaranRepo = PelanggaranRepository();
+  final _soalRepo = SoalRepository();
   
   bool _isLoading = true;
   int _jumlahBenar = 0;
   int _jumlahSalah = 0;
   int _jumlahPelanggaran = 0;
+  int _totalSoal = 0;
   double _nilaiAkhir = 0;
 
   @override
@@ -30,24 +33,44 @@ class _HasilUjianScreenState extends State<HasilUjianScreen> {
   }
 
   Future<void> _kalkulasiHasil() async {
-    // Tarik data jawaban
+    // Tarik semua soal ujian dan jawaban peserta
+    final soalList = await _soalRepo.getSoalByUjian(widget.ujian.idUjian!);
     final jawabanList = await _jawabanRepo.getJawabanPeserta(widget.idPeserta);
     final pelanggaranList = await _pelanggaranRepo.getPelanggaranPeserta(widget.idPeserta);
 
-    // TODO: Untuk kalkulasi benar/salah, kita perlu mencocokkan dengan SoalRepository. 
-    // Di prototipe awal ini, mari asumsikan dummy kalkulasi 
-    // karena kita belum melewatkan kunci jawaban ke layar hasil.
-    // Idealnya tarik List<Soal> lalu cocokkan.
-    
-    _jumlahPelanggaran = pelanggaranList.length;
-    
-    // Kalkulasi nilai sederhana (100 jika menjawab semua dan benar)
-    // Di sini mockup untuk UI saja jika belum ada join query.
-    _jumlahBenar = jawabanList.length; // Anggap benar semua sementara
-    _jumlahSalah = 0;
-    _nilaiAkhir = 86.0;
+    // Buat map kunci jawaban: id_soal -> jawaban_benar
+    final kunciJawaban = {for (var s in soalList) s.idSoal!: s.jawabanBenar};
+
+    // Buat map jawaban peserta: id_soal -> jawaban
+    final jawabanPeserta = {for (var j in jawabanList) j.idSoal: j.jawaban};
+
+    int benar = 0;
+    int salah = 0;
+
+    for (var soal in soalList) {
+      final jawaban = jawabanPeserta[soal.idSoal];
+      final kunci = kunciJawaban[soal.idSoal];
+      if (jawaban != null && kunci != null) {
+        if (jawaban.toUpperCase() == kunci.toUpperCase()) {
+          benar++;
+        } else {
+          salah++;
+        }
+      } else {
+        // Soal tidak dijawab dihitung salah
+        salah++;
+      }
+    }
+
+    final total = soalList.length;
+    final nilai = total > 0 ? (benar / total) * 100 : 0.0;
 
     setState(() {
+      _jumlahBenar = benar;
+      _jumlahSalah = salah;
+      _jumlahPelanggaran = pelanggaranList.length;
+      _totalSoal = total;
+      _nilaiAkhir = nilai;
       _isLoading = false;
     });
   }
@@ -77,35 +100,65 @@ class _HasilUjianScreenState extends State<HasilUjianScreen> {
                   padding: const EdgeInsets.all(24.0),
                   child: Column(
                     children: [
-                      const Text('NILAI', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                      const Text('NILAI AKHIR', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                       const SizedBox(height: 8),
                       Text(
                         _nilaiAkhir.toStringAsFixed(0),
-                        style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold, color: Colors.green),
+                        style: TextStyle(
+                          fontSize: 64,
+                          fontWeight: FontWeight.bold,
+                          color: _nilaiAkhir >= 75 ? Colors.green : (_nilaiAkhir >= 50 ? Colors.orange : Colors.red),
+                        ),
+                      ),
+                      Text(
+                        _nilaiAkhir >= 75 ? 'LULUS' : 'TIDAK LULUS',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: _nilaiAkhir >= 75 ? Colors.green : Colors.red,
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 24),
-              ListTile(
-                title: const Text('Benar'),
-                trailing: Text(_jumlahBenar.toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
-              ),
-              ListTile(
-                title: const Text('Salah'),
-                trailing: Text(_jumlahSalah.toString(), style: const TextStyle(fontWeight: FontWeight.bold)),
-              ),
-              ListTile(
-                title: const Text('Pelanggaran Terdeteksi', style: TextStyle(color: Colors.red)),
-                trailing: Text(_jumlahPelanggaran.toString(), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red)),
+              const SizedBox(height: 16),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Column(
+                    children: [
+                      ListTile(
+                        leading: const Icon(Icons.check_circle, color: Colors.green),
+                        title: const Text('Jawaban Benar'),
+                        trailing: Text('$_jumlahBenar / $_totalSoal', style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.green)),
+                      ),
+                      const Divider(height: 1),
+                      ListTile(
+                        leading: const Icon(Icons.cancel, color: Colors.red),
+                        title: const Text('Jawaban Salah / Tidak Dijawab'),
+                        trailing: Text(_jumlahSalah.toString(), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red)),
+                      ),
+                      const Divider(height: 1),
+                      ListTile(
+                        leading: const Icon(Icons.warning, color: Colors.orange),
+                        title: const Text('Pelanggaran Terdeteksi'),
+                        trailing: Text(_jumlahPelanggaran.toString(), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.orange)),
+                      ),
+                    ],
+                  ),
+                ),
               ),
               const SizedBox(height: 32),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.popUntil(context, (route) => route.isFirst);
-                },
-                child: const Text('KEMBALI KE LAYAR UTAMA'),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.popUntil(context, (route) => route.isFirst);
+                  },
+                  style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(50)),
+                  child: const Text('KEMBALI KE LAYAR UTAMA'),
+                ),
               )
             ],
           ),

@@ -1,0 +1,496 @@
+﻿--- Page 5 ---
+ Pengguna  Kebutuhan Utama  
+Guru/Pengawas  Login, membuat ujian, mengelola soal, memantau status 
+peserta, melihat log pelanggaran dan hasil  
+Siswa/Peserta  Mengisi identitas, membaca aturan, mengerjakan soal, melihat 
+timer, menerima peringatan, dan mengirim jawaban  
+8. User Story  
+ID User Story  
+US-01 Sebagai guru, saya ingin login agar hanya pengawas yang dapat mengelola 
+ujian.  
+US-02 Sebagai guru, saya ingin membuat sesi ujian agar siswa dapat mengikuti ujian 
+yang benar.  
+US-03 Sebagai guru, saya ingin mengelola soal agar isi ujian dapat diperbarui.  
+US-04 Sebagai siswa, saya ingin memasukkan identitas/kode ujian agar saya dapat 
+masuk ke sesi yang tepat.  
+US-05 Sebagai siswa, saya ingin mengerjakan soal dan berpindah antars oal agar dapat 
+menyelesaikan ujian.  
+US-06 Sebagai sistem, saya ingin menghitung waktu tersisa agar ujian berakhir sesuai 
+durasi.  
+US-07 Sebagai sistem, saya ingin mendeteksi sentuhan di zona tepi agar kejadian dapat 
+diperingatkan.  
+US-08 Sebagai sistem, s aya ingin menyimpan log pelanggaran agar kejadian dapat 
+ditinjau.  
+US-09 Sebagai guru, saya ingin melihat hasil ujian agar saya memperoleh rekap 
+pengerjaan peserta.  
+9. User Flow  
+Alur siswa yang direvisi: Masukkan identitas/kode ujian ΓåÆ validasi ΓåÆ baca aturan ΓåÆ setujui 
+ΓåÆ mulai ujian ΓåÆ timer aktif ΓåÆ kerjakan soal ΓåÆ sistem memantau sentuhan ΓåÆ jika sentuhan 
+berada di zona aman, lanjut; jika di zona tepi, catat pelanggaran + aktifkan alarm ΓåÆ kembali 
+ke ujian ΓåÆ submit atau waktu habis ΓåÆ simpan jawaban dan has il. 
+
+--- Page 6 ---
+ Alur guru: Login admin ΓåÆ dashboard ΓåÆ membuat/mengelola sesi ujian ΓåÆ mengelola soal ΓåÆ 
+melihat status peserta ΓåÆ melihat hasil dan log pelanggaran.  
+10. Tampilan Utama  
+Layar  Fungsi  
+Start Screen  Menampilkan identitas aplikasi, aturan singkat, dan tombol 
+mulai ujian.  
+Exam Screen  Menampilkan nomor soal, progress, timer, opsi jawaban, dan 
+navigasi.  
+Warning Screen  Menampilkan peringatan bahwa aktivitas pada zona tepi 
+terdeteksi, status alarm, dan tombol untuk menghentikan 
+peringatan lalu kembali ke ujian.  
+Login Guru  Form username dan password untuk admin/pengawas.  
+Dashboard Guru  Manajemen sesi ujian, bank soal, monitoring peserta, hasil, 
+dan log pelanggaran.  
+Wireframe UI/UX  
+Wireframe berikut merupakan rancangan awal antarmuka FokusUjian. Wireframe dibuat low-
+fidelity untuk menunjukkan struktur halaman, posisi komponen, alur navigasi, dan hubungan 
+fitur sebelum tahap visual design dan slicing Flutter. Rancangan mencakup sisi guru/pengawas 
+dan sisi siswa.  
+
+--- Page 7 ---
+  
+Gambar 10. Overview Wireframe Antarmuka FokusUjian  
+
+
+--- Page 8 ---
+  
+Gambar 11. Wireframe Login 
+Guru/Admin  
+Digunakan pengawas untuk masuk ke area 
+pengelolaan ujian.   
+Gambar 12. Wireframe Dashboard Guru  
+Menampilkan ringkasan ujian aktif, peserta, 
+soal, dan catatan pelanggaran.  
+
+
+--- Page 9 ---
+  
+Gambar 13. Wireframe Kelola Ujian  
+Menjadi form untuk membuat atau 
+mengubah sesi ujian, termasuk durasi dan 
+kode ujian.   
+Gambar 14. Wireframe Manajemen Soal  
+Digunakan untuk menambah, melihat, 
+mengedit, dan menghapus soal pilihan 
+ganda.  
+
+
+--- Page 10 ---
+  
+Gambar 15. Wireframe Identitas Peserta  
+Siswa memasukkan ide ntitas dan kode ujian 
+sebelum masuk ke tahap aturan.   
+Gambar 16. Wireframe Aturan Ujian  
+Menampilkan aturan pengerjaan dan 
+persetujuan sebelum timer ujian dimulai.  
+
+
+--- Page 11 ---
+  
+Gambar 17. Wireframe Exam Screen dan 
+Zona Tepi  
+Menampilkan soal, pilihan jawaban, timer, 
+navigasi, submit, dan penanda konseptual 
+zona tepi.   
+Gambar 18. Wireframe Peringatan 
+Pelanggaran  
+Menyampaikan bahwa sentuhan area tepi 
+terdeteksi, pelanggaran dicatat, dan alarm 
+aktif.  
+
+
+--- Page 12 ---
+  
+Gambar 19. Wireframe Hasil Ujian  
+Menampilkan ringkasan nilai, jumlah 
+jawaban benar/salah, dan jumlah 
+pelanggaran.  
+Catatan Implementasi Wireframe  
+ΓÇó Wireframe bukan desain visual final; warna, ikon, tipografi, dan komponen Flutter dapat 
+disempurnakan pada tahap UI high -fidelity.  
+ΓÇó Exam Screen menggunakan konsep zona tepi sebagai area terlarang. Nilai ambang awal yang 
+digunakan dalam spesifikasi adalah konfigurasi 24 dp dan perlu divalidasi pada perangkat 
+target.  
+ΓÇó Setiap perpindahan halaman harus tetap konsisten dengan alur pada requirement: identitas ΓåÆ 
+aturan ΓåÆ ujian  ΓåÆ peringatan bila terjadi pelanggaran ΓåÆ submit atau waktu habis ΓåÆ hasil.  
+
+
+--- Page 13 ---
+ 11. Jadwal Pengerjaan  
+Minggu  Target Pekerjaan  
+1 Revisi PRD -SRD terpadu, wireframe UI/UX, desain basis data, dan 
+backlog Agile.  
+2 Setup Flutter, implementasi halaman login, dashboard, sesi ujian, 
+soal, dan Exam Screen.  
+3 Implementasi SQLite, timer, penyimpanan jawaban, 
+EdgeTouchDetector, kontrol volume, alarm, dan mode aman.  
+4 Integrasi, pengujian end -to-end, debugging pada perangkat target, 
+dokumentasi, dan persiapan presentasi.  
+  
+
+--- Page 14 ---
+ BAB II - SOFTWARE REQUIREMENTS DOCUMENT (SRD)  
+1. Gambaran Sistem dan Arsitektur  
+FokusUjian menggunakan arsitektur aplikasi mobile standalone/local monolithic. Fitur inti 
+berjalan di dalam perangkat Android dan data ujian disimpan secara lokal menggunakan 
+SQLite. Tidak ada server eksternal yang diperlukan saat pelaksanaan ujian dalam ruang 
+lingkup MVP.  
+Komponen  Teknologi / Implementasi  
+Frontend & Logic  Flutter (Dart)  
+Database  SQLite  
+Platform  Android  
+Deteksi Sentuhan  Touch events / koor dinat x -y pada layar  
+Audio  Layanan/perangkat audio Android melalui integrasi Flutter  
+Mode Aman  Android kiosk / Lock Task sesuai konfigurasi perangkat target  
+2. Kebutuhan Fungsional  
+ID Nama  Spesifikasi  
+FR-01 Autentikasi Admin  Admin dapat login menggunakan username dan 
+password. Kredensial disimpan dengan mekanisme 
+yang sesuai untuk prototype; plaintext hanya boleh 
+digunakan sebagai data uji sementara dan bukan 
+praktik keamanan produksi.  
+FR-02 Kelola Ujian  Admin dapat membuat, melihat, mengubah,  dan 
+menghapus sesi ujian termasuk nama ujian, mata 
+pelajaran, durasi, tanggal, dan status.  
+FR-03 Kelola Bank Soal  Admin dapat CRUD soal pilihan ganda beserta pilihan 
+dan kunci jawaban.  
+FR-04 Identitas Peserta  Siswa mengisi identitas dan/atau kode ujian sebelum 
+masuk ke sesi.  
+FR-05 Mulai Ujian  Sistem menampilkan aturan dan hanya memulai timer 
+setelah peserta menyetujui aturan.  
+
+--- Page 15 ---
+ ID Nama  Spesifikasi  
+FR-06 Pengerjaan Soal  Siswa dapat memilih jawaban dan berpindah ke soal 
+sebelumnya/berikutnya selama sesi aktif.  
+FR-07 Timer  Sistem menampilkan waktu tersisa dan mengakhiri 
+sesi ketika waktu mencapai 0.  
+FR-08 Kiosk/Mode Aman  Sistem mengaktifkan mekanisme pembatasan navigasi 
+sesuai kemampuan dan konfigurasi perangkat target.  
+FR-09 Deteksi Edge Touch  Sistem memeriksa koordinat t ouch event dan 
+menganggap sentuhan dalam zona tepi sebagai event 
+pelanggaran sesuai ambang yang ditetapkan.  
+FR-10 Alarm dan Volume  Ketika event pelanggaran terdeteksi, sistem memutar 
+alarm dan mengatur volume media ke level 
+maksimum sesuai kemampuan peran gkat.  
+FR-11 Log Pelanggaran  Sistem mencatat waktu, posisi sentuhan, peserta, dan 
+jenis kejadian ke SQLite.  
+FR-12 Submit dan Hasil  Sistem menyimpan jawaban, menyelesaikan sesi, dan 
+menyimpan hasil ujian peserta.  
+FR-13 Monitoring Lokal  Admin dapat melihat  status peserta, jumlah 
+pelanggaran, dan hasil yang tersimpan di perangkat.  
+3. Aturan Edge Detection  
+Zona tepi harus ditentukan secara eksplisit agar dapat diuji. Untuk rancangan awal, gunakan 
+ambang 24 dp dari masing -masing batas layar sebagai nilai konf igurasi yang dapat diubah 
+pada saat pengujian. Nilai ini merupakan parameter desain awal, bukan klaim bahwa satu 
+ambang cocok untuk semua perangkat.  
+Parameter  Nilai Awal  Keterangan  
+Edge margin  24 dp  Jarak dari masing -masing tepi yang 
+diperlakukan sebagai zona terlarang  
+Atas y Γëñ margin  Zona tepi atas  
+
+--- Page 16 ---
+ Parameter  Nilai Awal  Keterangan  
+Bawah  y ΓëÑ tinggi -layar - 
+margin  Zona tepi bawah  
+Kiri x Γëñ margin  Zona tepi kiri  
+Kanan  x ΓëÑ lebar -layar - 
+margin  Zona tepi kanan  
+Multi -touch  Satu event 
+pelanggaran per 
+episode  Untuk mencegah alarm dipicu berkali -
+kali oleh event yang sangat rapat  
+Catatan pengujian: sentuhan tidak sengaja, swipe, multi -touch, rotasi perangkat, dan variasi 
+ukuran layar perlu diuji pada perangkat target. Bila terjadi terlalu banyak false positive, nilai 
+edge margin harus dise suaikan.  
+4. Kebutuhan Non -Fungsional  
+ID Kategori  Spesifikasi  
+NFR -01 Kinerja  Waktu dari event sentuhan terlarang sampai trigger 
+alarm ditargetkan kurang dari 0,5 detik pada perangkat 
+uji. 
+NFR -02 Offline  Fitur utama ujian dapat berjalan tanpa koneksi internet 
+selama data yang diperlukan tersedia secara lokal.  
+NFR -03 Kompatibilitas  Target awal Android 8.0/API 26 atau lebih tinggi, 
+dengan validasi akhir pada perangkat yang digunakan 
+untuk demo.  
+NFR -04 Reliabilitas  Aplikasi tidak boleh crash pada alur normal mulai dari 
+login, mulai ujian, pengerjaan, pelanggaran, hingga 
+submit.  
+NFR -05 Keamanan  Akses pengelolaan dibatasi pada admin; data 
+kredensial tidak dianjurkan disimpan sebagai plaintext 
+pada versi yang digunakan di luar pengujian.  
+NFR -06 Usability  Kontrol utama pada halaman ujian harus mudah 
+dipahami dan tetap terlihat ketika timer berjalan.  
+
+--- Page 17 ---
+ ID Kategori  Spesifikasi  
+NFR -07 Auditability  Setiap kejadian pelanggaran yang diproses sistem 
+memiliki timestamp dan identitas peserta.  
+NFR -08 Maintainability  Ambang edge margin, dur asi alarm, dan struktur 
+penyimpanan dibuat sebagai parameter terpisah agar 
+mudah diubah saat pengujian.  
+5. Data yang Disimpan  
+Untuk menyesuaikan antara fitur yang direncanakan dan implementasi SQLite, basis data 
+MVP diperluas menjadi enam tabel utama berikut.  
+Tabel  Field Utama  Keterangan  
+admin  id_admin, username, password_hash  Menyimpan akun 
+pengawas/admin.  
+ujian  id_ujian, nama_ujian, mata_pelajaran, 
+durasi, tanggal, status, kode_ujian  Menyimpan konfigurasi 
+sesi ujian.  
+soal id_soal, id_ujian, teks_soal, opsi_a, 
+opsi_b, opsi_c, opsi_d, jawaban_benar  Menyimpan soal yang 
+dipakai suatu sesi.  
+peserta  id_peserta, id_ujian, nama, kelas, 
+identitas  Menyimpan peserta pada 
+sesi ujian.  
+jawaban  id_jawaban, id_peserta, id_soal, 
+jawaban, waktu_jawab  Menyimp an jawaban 
+peserta.  
+pelanggaran  id_pelanggaran, id_peserta, waktu, 
+posisi_x, posisi_y, jenis_pelanggaran  Menyimpan event 
+sentuhan pada zona tepi.  
+  
+
+--- Page 18 ---
+ BAB III - ARSITEKTUR DAN MODEL DATA  
+1. Arsitektur Logis  
+Lapisan antarmuka Flutter menangani layar dan interaksi pengguna. Lapisan logika aplikasi 
+mengatur alur ujian, timer, validasi event, alarm, dan state. Repository/data layer berinteraksi 
+dengan SQLite. Integrasi perangkat menangani touch event, audio/volume, serta mode aman 
+Android.  
+Lapisan  Tanggung J awab  
+UI Login, dashboard, start screen, exam screen, warning screen, 
+hasil  
+State/Controller  Status ujian, timer, nomor soal, jawaban, status alarm  
+Service  EdgeTouchDetector, AlarmService, KioskService, 
+ExamService  
+Repository  CRUD dan query SQLite  
+Database  admin, ujian, soal, peserta, jawaban, pelanggaran  
+2. Entity Relationship Diagram (ERD)  
+ 
+Gambar 6. ERD FokusUjian - rancangan data MVP  
+3. Relasi Data Inti  
+ΓÇó Satu ujian memiliki banyak soal.  
+ΓÇó Satu ujian memiliki banyak peserta.  
+ΓÇó Satu peserta memiliki banyak jawaban.  
+ΓÇó Satu soal dapat muncul pada banyak record jawaban peserta.  
+ΓÇó Satu peserta dapat memiliki banyak log pelanggaran.  
+ΓÇó Admin membuat dan mengelola sesi ujian serta soal.  
+  
+
+
+--- Page 19 ---
+ BAB IV - UML DAN ALUR SISTEM  
+1. Use Case Diagram  
+ 
+Gambar 7. Use Case Diagram FokusUjian  
+
+
+--- Page 20 ---
+ 2. Activity Diagram Proses Ujian  
+ 
+Gambar 8. Activity Diagram Proses Ujian  
+
+
+--- Page 21 ---
+ 3. Sequence Diagram Event Pelanggaran  
+ 
+Gambar 9. Sequence Diagram Deteksi Edge Touch dan Alarm  
+4. State/Status Ujian  
+Status  Deskripsi  Transisi  
+DRAFT  Ujian sedang disiapkan admin.  DRAFT ΓåÆ AKTIF  
+AKTIF  Ujian dapat diikuti peserta.  AKTIF ΓåÆ SELESAI / 
+DIBATALKAN  
+BERLANGSUNG  Peserta sedang mengerjakan.  BERLANGSUNG ΓåÆ 
+SELESAI  
+SELESAI  Jawaban sudah dikirim atau waktu 
+habis.  Final  
+DIBATALKAN  Sesi dihentikan oleh pengelola.  Final  
+  
+
+
+--- Page 22 ---
+ BAB V - PRODUCT BACKLOG DAN RENCANA AGILE  
+1. Product Backlog  
+ID Backlog  Prioritas  Sprint  
+PB-01 Login admin  High  Sprint 1  
+PB-02 CRUD sesi ujian  High  Sprint 1  
+PB-03 CRUD bank soal  High  Sprint 1  
+PB-04 Identitas/kode peserta  High  Sprint 2  
+PB-05 Exam Screen + navigasi  High  Sprint 2  
+PB-06 Timer ujian  High  Sprint 2  
+PB-07 Lock/Kiosk mode  High  Sprint 2  
+PB-08 Edge touch detector  High  Sprint 3  
+PB-09 Alarm + volume  High  Sprint 3  
+PB-10 Log pelanggaran  Medium  Sprint 3  
+PB-11 Submit + hasil  Medium  Sprint 3  
+PB-12 Monitoring dashboard  Medium  Sprint 4  
+PB-13 Pengujian end -to-end High  Sprint 4  
+2. Sprint Plan  
+Sprint  Fokus  Output  
+Sprint 1  Fondasi admin dan data  Login, dashboard awal, SQLite, 
+CRUD ujian, CRUD soal  
+Sprint 2  Skenario peserta  Identitas, aturan, Exam Screen, timer, 
+penyimpanan jawaban, mode aman  
+Sprint 3  Fitur pembeda  Edge touch, alarm, volume, warning 
+screen, log pelanggaran, submit  
+Sprint 4  Integrasi dan validasi  Monitoring, hasil, pengujian, 
+debugging, dokumentasi dan 
+presentasi  
+
+--- Page 23 ---
+ 3. Definition of Done  
+ΓÇó Fitur selesai dikodekan dan dapat dijalankan pada perangkat/emulator target.  
+ΓÇó Alur normal fitur dapat diuji tanpa crash fatal.  
+ΓÇó Perubahan state dan data tersimpan sesuai kebutuhan.  
+ΓÇó Fitur utama memiliki minimal satu skenario uji positif dan satu skenario uji negatif.  
+ΓÇó Mockup dan implementasi tidak memiliki fitur kritis yang saling bertentangan.  
+  
+
+--- Page 24 ---
+ BAB VI - SKENARIO PENGUJIAN DAN KRITERIA KEBERHASILAN  
+1. Test Case Utama  
+ID Skenario  Input/Kondisi  Expected Result  Status  
+TC-01 Login admin 
+benar  Username/password 
+valid  Masuk dashboard admin  Pass/Fail  
+TC-02 Login admin 
+salah  Password tidak valid  Login ditolak dan pesan 
+ditampilkan  Pass/Fail  
+TC-03 Tambah soal  Data soal lengkap  Soal tersimpan di SQLite  Pass/Fail  
+TC-04 Buat  sesi ujian  Nama, durasi, kode 
+lengkap  Sesi tersimpan dan dapat 
+dipilih  Pass/Fail  
+TC-05 Mulai ujian  Peserta valid + 
+setuju aturan  Exam Screen tampil dan 
+timer aktif  Pass/Fail  
+TC-06 Touch zona 
+aman  Sentuh area tengah  Tidak ada 
+alarm/pelanggaran  Pass/Fail  
+TC-07 Touch zona tepi  Sentuh dalam edge 
+margin  Log dibuat + alarm aktif + 
+volume diatur  Pass/Fail  
+TC-08 Stop alarm  Tekan aksi kembali 
+ke ujian  Alarm berhenti dan Exam 
+Screen kembali  Pass/Fail  
+TC-09 Waktu habis  Timer mencapai 
+00:00  Ujian berakhir dan jawaban 
+disimpan  Pass/Fail  
+TC-10 Submit ujian  Peserta menekan 
+submit  Jawaban dan hasil tersimpan  Pass/Fail  
+TC-11 Lihat log  Admin membuka 
+monitoring  Data pelanggaran peserta 
+tampil  Pass/Fail  
+TC-12 Offline  Matikan koneksi 
+internet  Fitur utama ujian tetap 
+berjalan  Pass/Fail  
+2. Kriteria Keberhasilan Produk  
+ΓÇó Aplikasi dapat dibangun dan dijalankan pada perangkat Android target tanpa crash fatal 
+pada alur utama.  
+
+--- Page 25 ---
+ ΓÇó Guru dapat login, membuat sesi ujian, dan mengelola soal.  
+ΓÇó Siswa dapat masuk ke sesi, membaca aturan, mengerjakan soal, dan submit.  
+ΓÇó Timer berjalan dan mengakhiri ujian ketika waktu habis.  
+ΓÇó Sentuhan di area aman tidak menimbulkan peringatan.  
+ΓÇó Sentuhan di zona tepi memicu pencatatan pelanggaran serta mekanisme alarm yang telah 
+ditentukan.  
+ΓÇó Jawab an dan log pelanggaran tersimpan di SQLite.  
+ΓÇó Hasil ujian dapat ditampilkan kembali kepada admin.  
+  
+
+--- Page 26 ---
+ BAB VII - BATASAN, RISIKO, DAN RENCANA PENGEMBANGAN  
+1. Batasan MVP  
+ΓÇó Sistem menggunakan penyimpanan lokal sehingga belum menyediakan sinkronisasi lintas 
+perangkat secara real -time.  
+ΓÇó Monitoring guru dalam MVP dibatasi pada data yang tersedia di perangkat yang 
+menjalankan aplikasi.  
+ΓÇó Deteksi sentuhan tepi berpotensi menghasilkan false positive sehingga ambang harus 
+divalidasi dengan pengujian nyata.  
+ΓÇó Kemampua n mode aman dan kontrol volume dapat berbeda menurut versi Android dan 
+konfigurasi perangkat; karena itu pengujian pada perangkat target menjadi bagian penting 
+dari implementasi.  
+2. Risiko Implementasi dan Mitigasi  
+ID Risiko  Mitigasi  
+R-01 Lock/Kiosk tidak  bekerja seperti 
+yang diharapkan  Uji prototype pada perangkat target sejak 
+Sprint 2; dokumentasikan mode yang 
+benar -benar tersedia.  
+R-02 False positive edge touch  Buat edge margin sebagai parameter; uji 
+berbagai ukuran layar dan skenario 
+sentuhan.  
+R-03 Alarm/volume tidak konsisten  Sediakan service terpisah; uji beberapa 
+kondisi volume dan fokus audio.  
+R-04 Data rusak atau tidak tersimpan  Gunakan transaksi SQLite pada 
+penyimpanan jawaban dan log; uji force 
+close pada skenario tertentu.  
+R-05 Scope melebar  Tetapkan MVP sebagai enam kelompok 
+data + fitur inti, sedangkan fitur 
+online/sinkronisasi berada di luar scope.  
+
+--- Page 27 ---
+ 3. Rencana Pengembangan Lanjutan  
+ΓÇó Sinkronisasi hasil dan log ke server sekolah jika arsitektur online diperlukan.  
+ΓÇó Import soal dari file aga r guru tidak perlu memasukkan satu per satu.  
+ΓÇó Laporan nilai dan pelanggaran yang lebih lengkap.  
+ΓÇó Manajemen beberapa akun guru dan hak akses yang lebih rinci.  
+ΓÇó Penyempurnaan mekanisme kiosk/device management setelah pengujian perangkat target.  
+  
+
+--- Page 28 ---
+ LAMPIRAN  A - TRACEABILITY MATRIX  
+Requirement  User Story  Data/Komponen  Test Case  
+FR-01 US-01 admin  TC-01, TC -02 
+FR-02 US-02 ujian  TC-04 
+FR-03 US-03 soal TC-03 
+FR-04 US-04 peserta  TC-05 
+FR-05/06  US-05 peserta, jawaban  TC-05 
+FR-07 US-06 ujian/jawaban  TC-09 
+FR-08 US-05 Konfigurasi Android  TC-09 / pengujian 
+perangkat  
+FR-09 US-07 pelanggaran  TC-06, TC -07 
+FR-10 US-07 Audio/Volume  TC-07, TC -08 
+FR-11 US-08 pelanggaran  TC-07, TC -11 
+FR-12 US-09 jawaban  TC-09, TC -10 
+FR-13 US-09 hasil, pelanggaran  TC-11 
+LAMPIRAN  B - KONTRAK FUNGSI INTERNAL  
+Fungsi  Return  Deskripsi  
+validateAdminLogin(username, 
+password)  Boolean  Memvalidasi kredensial admin 
+terhadap SQLite.  
+createExam(examData)  Exam ID / 
+Boolean  Menyimpan sesi ujian baru.  
+saveAnswer(participantId, 
+questionId, answer)  Boolean  Menyimpan atau memperbarui 
+jawaban.  
+detectEdgeTouch(x, y, width, 
+height, margin)  Boolean  Mengembalikan true jika koordinat 
+berada di zona tepi.  
+triggerAlarmEvent()  Void  Mengatur volume sesuai kebijakan 
+aplikasi dan memulai audio alarm.  
+stopAlarmEvent()  Void  Menghentikan audio alarm dan 
+mengembalikan state ke sesi ujian.  
+
+--- Page 29 ---
+ Fungsi  Return  Deskripsi  
+logViolation(participantId, x, y, 
+type)  Boolean  Menyimpan event pelanggaran ke 
+SQLite.  
+submitExam(participantId)  Boolean  Menandai sesi peserta selesai dan 
+menyimpan hasil.  
+LAMPIRAN C - CHECKLIST SEBELUM CODING  
+ΓÇó Finalisasi field database dan relasi.  
+ΓÇó Tetapkan edge margin sebagai konfigurasi.  
+ΓÇó Uji Lock/Kiosk pada perangkat Android target.  
+ΓÇó Uji kontrol volume dan audio pada perangkat target.  
+ΓÇó Sepakati alur submit d an hasil.  
+ΓÇó Pastikan mockup menampilkan hanya fitur yang akan dibuat pada MVP.  
+ΓÇó Buat repository Git dan struktur folder Flutter.  
+ΓÇó Buat minimal satu prototype terpisah untuk EdgeTouchDetector sebelum 
+menggabungkannya ke aplikasi penuh.  
+

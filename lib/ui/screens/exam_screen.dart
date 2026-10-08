@@ -111,16 +111,27 @@ class _ExamScreenState extends State<ExamScreen> {
     super.dispose();
   }
 
+  bool _isViolationOnCooldown = false;
+
   void _checkEdgeTouch(PointerDownEvent event) {
+    // Cegah double-trigger pelanggaran dalam waktu singkat (debounce 3 detik)
+    if (_isViolationOnCooldown) return;
+
     final margin = 24.0;
     final size = MediaQuery.of(context).size;
     final pos = event.position;
 
-    if (pos.dx <= margin || 
-        pos.dx >= size.width - margin || 
-        pos.dy <= margin || 
+    if (pos.dx <= margin ||
+        pos.dx >= size.width - margin ||
+        pos.dy <= margin ||
         pos.dy >= size.height - margin) {
-      
+
+      // Aktifkan cooldown
+      _isViolationOnCooldown = true;
+      Future.delayed(const Duration(seconds: 3), () {
+        if (mounted) setState(() => _isViolationOnCooldown = false);
+      });
+
       // Log pelanggaran
       final p = Pelanggaran(
         idPeserta: widget.idPeserta,
@@ -135,7 +146,10 @@ class _ExamScreenState extends State<ExamScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => const WarningScreen()),
-      );
+      ).then((_) {
+        // Reset cooldown setelah kembali dari warning screen
+        if (mounted) setState(() => _isViolationOnCooldown = false);
+      });
     }
   }
 

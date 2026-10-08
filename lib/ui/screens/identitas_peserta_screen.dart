@@ -42,12 +42,12 @@ class _IdentitasPesertaScreenState extends State<IdentitasPesertaScreen> {
         return;
       }
 
-      // Validasi status ujian
-      if (ujian.status != 'Aktif' && ujian.status != 'Draft') { // Bisa disesuaikan lagi
+      // Validasi status ujian — hanya yang statusnya 'Aktif' yang bisa diakses
+      if (ujian.status.toLowerCase() != 'aktif') {
         setState(() => _isLoading = false);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Ujian belum aktif atau sudah selesai.')),
+            SnackBar(content: Text('Ujian belum aktif atau sudah selesai. Status saat ini: ${ujian.status}')),
           );
         }
         return;

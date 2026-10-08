@@ -71,6 +71,8 @@ class _ExamScreenState extends State<ExamScreen> {
     });
   }
 
+  Future<void>? _pendingSave;
+
   void _pilihJawaban(int idSoal, String opsi) {
     setState(() {
       _jawabanPeserta[idSoal] = opsi;
@@ -83,11 +85,15 @@ class _ExamScreenState extends State<ExamScreen> {
       jawaban: opsi,
       waktuJawab: DateTime.now().toIso8601String(),
     );
-    _jawabanRepo.saveAnswer(jwb);
+    _pendingSave = _jawabanRepo.saveAnswer(jwb);
   }
 
-  void _submitUjian() {
+  void _submitUjian() async {
+    if (_pendingSave != null) {
+      await _pendingSave;
+    }
     if (_timer.isActive) _timer.cancel();
+    if (!mounted) return;
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

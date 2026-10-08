@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 import '../../models/admin.dart';
 import '../../repositories/admin_repository.dart';
 
@@ -66,10 +68,12 @@ class _KelolaGuruScreenState extends State<KelolaGuruScreen> {
             ElevatedButton(
               onPressed: () async {
                 if (formKey.currentState!.validate()) {
+                  final bytes = utf8.encode(passwordController.text.trim());
+                  final hash = sha256.convert(bytes).toString();
                   final newGuru = Admin(
                     idAdmin: guru?.idAdmin,
                     username: usernameController.text.trim(),
-                    passwordHash: passwordController.text.trim(),
+                    passwordHash: hash,
                     role: 'guru',
                   );
 

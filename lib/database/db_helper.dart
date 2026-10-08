@@ -1,5 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
 
 class DatabaseHelper {
   static final DatabaseHelper instance = DatabaseHelper._init();
@@ -19,7 +21,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 2,
+      version: 3, // Increment version for migration
       onConfigure: _onConfigure,
       onCreate: _createDB,
       onUpgrade: _onUpgrade,
@@ -31,14 +33,18 @@ class DatabaseHelper {
   }
 
   Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    // Untuk prototyping, drop semua tabel dan buat ulang saat upgrade versi
-    await db.execute('DROP TABLE IF EXISTS pelanggaran');
-    await db.execute('DROP TABLE IF EXISTS jawaban');
-    await db.execute('DROP TABLE IF EXISTS peserta');
-    await db.execute('DROP TABLE IF EXISTS soal');
-    await db.execute('DROP TABLE IF EXISTS ujian');
-    await db.execute('DROP TABLE IF EXISTS admin');
-    await _createDB(db, newVersion);
+    // Pertahankan data, lakukan migrasi skema perlahan
+    if (oldVersion < 3) {
+      // Migrasi password plaintext ke hash
+      final admins = await db.query('admin');
+      for (var a in admins) {
+        if (a['password_hash'] == 'admin123' || a['password_hash'] == 'guru123') {
+          final bytes = utf8.encode(a['password_hash'] as String);
+          final hash = sha256.convert(bytes).toString();
+          await db.update('admin', {'password_hash': hash}, where: 'id_admin = ?', whereArgs: [a['id_admin']]);
+        }
+      }
+    }
   }
 
   Future _createDB(Database db, int version) async {
@@ -57,9 +63,10 @@ class DatabaseHelper {
     ''');
 
     // Akun default admin
+    final adminBytes = utf8.encode('admin123');
     await db.insert('admin', {
       'username': 'admin',
-      'password_hash': 'admin123',
+      'password_hash': sha256.convert(adminBytes).toString(),
       'role': 'admin'
     });
 

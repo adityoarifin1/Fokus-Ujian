@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'package:crypto/crypto.dart';
 import '../database/db_helper.dart';
 import '../models/admin.dart';
 
@@ -17,10 +19,14 @@ class AdminRepository {
     }
   }
 
-  Future<Admin?> validateLogin(String username, String passwordHash) async {
+  Future<Admin?> validateLogin(String username, String passwordPlain) async {
     final admin = await getAdmin(username);
-    if (admin != null && admin.passwordHash == passwordHash) {
-      return admin;
+    if (admin != null) {
+      final bytes = utf8.encode(passwordPlain);
+      final hash = sha256.convert(bytes).toString();
+      if (admin.passwordHash == hash) {
+        return admin;
+      }
     }
     return null;
   }

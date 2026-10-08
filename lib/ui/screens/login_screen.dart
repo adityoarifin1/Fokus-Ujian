@@ -11,8 +11,8 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _usernameController = TextEditingController(text: 'guru');
-  final _passwordController = TextEditingController(text: 'admin123');
+  final _usernameController = TextEditingController();
+  final _passwordController = TextEditingController();
   final _adminRepo = AdminRepository();
   bool _isLoading = false;
   String _error = '';
@@ -82,6 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 20),
                     TextField(
+                      key: const Key('username'),
                       controller: _usernameController,
                       decoration: const InputDecoration(
                         labelText: 'Username',
@@ -91,6 +92,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 16),
                     TextField(
+                      key: const Key('password'),
                       controller: _passwordController,
                       obscureText: true,
                       decoration: const InputDecoration(

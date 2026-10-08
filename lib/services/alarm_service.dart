@@ -26,7 +26,7 @@ class AlarmService {
       } else {
         _isPlaying = true;
         // Kembalikan plugin volume_controller khusus untuk Mobile
-        VolumeController().setVolume(1.0);
+        VolumeController.instance.setVolume(1.0);
         
         _player.setReleaseMode(ReleaseMode.loop);
         await _player.play(AssetSource('alarm.mp3'));

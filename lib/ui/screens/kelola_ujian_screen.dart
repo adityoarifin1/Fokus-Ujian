@@ -8,7 +8,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:excel/excel.dart' hide Border;
 import 'dart:typed_data';
 import 'package:desktop_drop/desktop_drop.dart';
-import 'package:cross_file/cross_file.dart';
+
 
 class KelolaUjianScreen extends StatefulWidget {
   final Ujian? ujian;
@@ -62,7 +62,7 @@ class _KelolaUjianScreenState extends State<KelolaUjianScreen> {
         mataPelajaran: _mapelController.text.trim(),
         durasi: int.tryParse(_durasiController.text.trim()) ?? 0,
         tanggal: DateTime.now().toIso8601String(),
-        status: 'Draft',
+        status: widget.ujian?.status ?? 'Draft',
         kodeUjian: _kodeController.text.trim(),
       );
 

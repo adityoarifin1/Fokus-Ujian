@@ -1,57 +1,33 @@
 import 'package:audioplayers/audioplayers.dart';
+import 'package:perfect_volume_control/perfect_volume_control.dart';
 import 'package:flutter/foundation.dart';
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:js' as js;
+// Conditional import: jika dikompilasi ke Web (punya pustaka dart:html),
+// gunakan alarm_web_helper.dart. Jika tidak, gunakan alarm_mobile_helper.dart.
+import 'alarm_mobile_helper.dart' if (dart.library.html) 'alarm_web_helper.dart' as web_helper;
 
 class AlarmService {
   final AudioPlayer _player = AudioPlayer();
   bool _isPlaying = false;
 
-  /// Membuat suara "ting tung" menggunakan Web Audio API
-  /// (berjalan di browser tanpa perlu file MP3)
-  void _playWebTingTung() {
-    if (_isPlaying) return;
-    _isPlaying = true;
-    _scheduleTingTungLoop();
-  }
-
   void _scheduleTingTungLoop() {
     if (!_isPlaying) return;
-    // Ting (frekuensi tinggi)
-    js.context.callMethod('eval', ['''
-      (function() {
-        var ctx = new (window.AudioContext || window.webkitAudioContext)();
-        function playNote(freq, start, duration) {
-          var osc = ctx.createOscillator();
-          var gain = ctx.createGain();
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, ctx.currentTime + start);
-          gain.gain.setValueAtTime(0.8, ctx.currentTime + start);
-          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + duration);
-          osc.start(ctx.currentTime + start);
-          osc.stop(ctx.currentTime + start + duration);
-        }
-        playNote(1200, 0, 0.4);   // Ting
-        playNote(900, 0.45, 0.5); // Tung
-      })();
-    ''']);
-
-    // Ulangi setiap 1.5 detik selama alarm aktif
-    Future.delayed(const Duration(milliseconds: 1500), () {
-      if (_isPlaying) _scheduleTingTungLoop();
-    });
+    // web_helper otomatis merujuk ke fungsi kosong (di Mobile)
+    // atau merujuk ke fungsi dart:js (di Web)
+    web_helper.playWebTingTung(_isPlaying, _scheduleTingTungLoop);
   }
 
   Future<void> triggerAlarmEvent() async {
     try {
       if (kIsWeb) {
-        // Gunakan Web Audio API untuk suara ting-tung di browser
-        _playWebTingTung();
+        if (!_isPlaying) {
+          _isPlaying = true;
+          _scheduleTingTungLoop();
+        }
       } else {
-        // Mobile: gunakan audioplayers dan naikkan volume ke 100%
         _isPlaying = true;
+        // Kembalikan plugin perfect_volume_control khusus untuk Mobile
+        await PerfectVolumeControl.setVolume(1.0);
+        
         _player.setReleaseMode(ReleaseMode.loop);
         await _player.play(AssetSource('alarm.mp3'));
       }
@@ -73,4 +49,3 @@ class AlarmService {
     }
   }
 }
-

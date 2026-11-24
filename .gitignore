@@ -46,3 +46,16 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# Laporan (tidak perlu di-commit ke GitHub)
+*.pdf
+*.docx
+*.doc
+*.pptx
+*.xlsx
+LAPORAN_*.md
+audit_report_results.txt
+generate_*.py
+inspect_reports.py
+update_md.py
+

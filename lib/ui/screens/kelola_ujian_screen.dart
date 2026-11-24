@@ -149,16 +149,16 @@ class _KelolaUjianScreenState extends State<KelolaUjianScreen> {
 
   Future<void> _importExcel() async {
     try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
+      final files = await FilePicker.pickFiles(
         type: FileType.any,
-        withData: true,
       );
 
-      if (result != null && result.files.single.bytes != null) {
-        if (!result.files.single.name.toLowerCase().endsWith('.xlsx')) {
+      if (files.isNotEmpty) {
+        final file = files.single;
+        if (!file.name.toLowerCase().endsWith('.xlsx')) {
           throw Exception('File harus berformat .xlsx');
         }
-        await _processExcelBytes(result.files.single.bytes!);
+        await _processExcelBytes(await file.readAsBytes());
       }
     } catch (e, st) {
       if (mounted) {

@@ -9,6 +9,7 @@ import '../../models/pelanggaran.dart';
 import '../../repositories/pelanggaran_repository.dart';
 import 'hasil_ujian_screen.dart';
 import 'warning_screen.dart';
+import '../../services/kiosk_mode_service.dart';
 
 class ExamScreen extends StatefulWidget {
   final Ujian ujian;
@@ -36,6 +37,7 @@ class _ExamScreenState extends State<ExamScreen> {
   @override
   void initState() {
     super.initState();
+    KioskModeService.enable();
     _sisaWaktuDetik = widget.ujian.durasi * 60;
     _startTimer();
     _loadSoal();
@@ -114,6 +116,7 @@ class _ExamScreenState extends State<ExamScreen> {
   @override
   void dispose() {
     if (_timer.isActive) _timer.cancel();
+    KioskModeService.disable();
     super.dispose();
   }
 

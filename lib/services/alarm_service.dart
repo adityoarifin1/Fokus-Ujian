@@ -31,7 +31,7 @@ class AlarmService {
         _player.setReleaseMode(ReleaseMode.loop);
         await _player.play(AssetSource('alarm.mp3'));
       }
-      debugPrint('ALARM TRIGGERED!');
+            await VolumeController.instance.setVolume(1.0);
     } catch (e) {
       debugPrint('Error triggering alarm: $e');
     }
